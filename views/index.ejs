@@ -1,0 +1,44 @@
+<% include header %>
+
+  <h1><%-title %></h1>
+  <p>Welcome to <%-title %></p>
+  <form>
+    <label for="accessToken">Access Token</label>
+    <input type="text" id="accessToken" name="accessToken" placeholder="Enter your access token..." required>
+    <label for="folderId">Root Folder ID (optional)</label>
+    <input type="text" id="folderId" name="folderId" placeholder="Enter your the ID of folder to start your folder tree">
+    <button id="generateFolderTree" type="submit">Generate Folder Tree</button>
+  </form>
+  <div id="folderTree"></div>
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.0/jquery.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/underscore.js/1.8.3/underscore-min.js"></script>
+  <script id="folderTreeTemplate" type="text/template">
+    <ol><i class="fa fa-folder fa-fw" aria-hidden="true"></i>{{= model.name }}
+        {{ _.each(model.folders, function(child) { }}
+          {{ print(templateFn({"model": child, "templateFn": templateFn})) }}
+        {{ }); }}
+        {{ _.each(model.files, function(child) { }}
+          <ul><i class="fa fa-file fa-fw" aria-hidden="true"></i>{{= child.name }}</ul>
+        {{ }); }}
+    </ol>
+  </script>
+  <script>
+    _.templateSettings = {
+      interpolate : /\{\{=([^}]*)\}\}/g,
+      evaluate: /\{\{(?!=)(.*?)\}\}/g
+    };
+    console.log("HELLO");
+    $('#generateFolderTree').click(function(e) {
+      e.preventDefault();
+      var accessToken = $('#accessToken').val();
+      var folderId = $('#folderId').val() || "0";
+      var loc = window.location;
+      var baseUrl = loc.protocol + "//" + loc.hostname + (loc.port? ":"+loc.port : "") + "/";
+      var finalUrl = baseUrl + '?access_token=' + accessToken + '&folder_id=' + folderId;
+      $.get(finalUrl, function(data) {
+        var templateFn = _.template($('#folderTreeTemplate').html());
+        $('#folderTree').html(templateFn({model: data, templateFn: templateFn}));
+      });
+    })
+  </script>
+<% include footer %>
