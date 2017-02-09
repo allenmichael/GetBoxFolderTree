@@ -5,7 +5,6 @@ const fs = require("fs");
 const path = require("path");
 const recurseFolders = require('../util/recurseFolders');
 const Box = require('box-node-sdk');
-let _ = require('underscore');
 
 let BoxSdk = new Box({
   clientID: "",
