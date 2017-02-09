@@ -1,0 +1,11 @@
+<ol><i class="fa fa-folder fa-fw" aria-hidden="true"></i><%= model.name %>
+    <% model.folders.forEach(function(child) { %>
+        <%- include('partialTree', {"model": child}) %>
+    <% }); %>
+    <% model.folders.forEach(function(child) { %>
+        <ul><i class="fa fa-folder fa-fw" aria-hidden="true"></i><%= child.name %></ul>
+    <% }); %>
+    <% model.files.forEach(function(child) { %>
+        <ul><i class="fa fa-file fa-fw" aria-hidden="true"></i><%= child.name %></ul>
+    <% }); %>
+</ol>
