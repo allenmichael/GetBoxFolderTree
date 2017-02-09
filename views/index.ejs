@@ -17,6 +17,9 @@
         {{ _.each(model.folders, function(child) { }}
           {{ print(templateFn({"model": child, "templateFn": templateFn})) }}
         {{ }); }}
+        {{ _.each(model.folders, function(child) { }}
+          <ul><i class="fa fa-folder fa-fw" aria-hidden="true"></i>{{= child.name }}</ul>
+        {{ }); }}
         {{ _.each(model.files, function(child) { }}
           <ul><i class="fa fa-file fa-fw" aria-hidden="true"></i>{{= child.name }}</ul>
         {{ }); }}
